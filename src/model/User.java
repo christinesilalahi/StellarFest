@@ -13,55 +13,84 @@ public class User {
 	private String password;
 	private String role;
 	
-	public static String generateNextId() {
+	private static boolean isFieldExists(String field, String value) {
 	    Database db = Database.getInstance();
-	    String query = "SELECT id FROM users ORDER BY id DESC LIMIT 1";
-	    PreparedStatement ps = db.preparedStatement(query);
-	    ResultSet rs = null;
-	    String lastId = null;
-
-	    try {
-	        rs = ps.executeQuery();
-	        if (rs.next()) {
-	            lastId = rs.getString("id"); // Get the last ID
-	        } else {
-	            return "SF000"; // If no rows exist, start with SF000
+	    String query = "SELECT COUNT(*) AS count FROM users WHERE " + field + " = ?";
+	    try (PreparedStatement ps = db.preparedStatement(query)) {
+	        ps.setString(1, value);
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                int count = rs.getInt("count");
+	                return count > 0;
+	            }
 	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
+	    return false;
+	}
 
-	    // Increment the numeric part of the ID
-	    if (lastId != null) {
-	        int num = Integer.parseInt(lastId.substring(2)); // Extract numeric part
-	        num++; // Increment
-	        return String.format("SF%03d", num); // Format with leading zeros
+	public static boolean isIdExists(String id) {
+	    return isFieldExists("id", id);
+	}
+
+	public static boolean isEmailExists(String email) {
+	    return isFieldExists("email", email);
+	}
+
+	public static boolean isUsernameExists(String username) {
+	    return isFieldExists("username", username);
+	}
+
+	// Method to generate Id
+	public static String generateId(String role) {
+	    String prefix = "";
+
+	    // Determine prefix based on role
+	    switch(role) {
+	        case "Guest":
+	            prefix = "G";
+	            break;
+	        case "Event Organizer":
+	            prefix = "EO";
+	            break;
+	        case "Vendor":
+	            prefix = "V";
+	            break;
+	    }
+	    
+	    String newId = "";
+	    boolean idExists = true;
+
+	    while (idExists) {
+	        int randomNumber = (int)(Math.random() * 1000);  // Generates a random number between 0 and 999
+	        newId = String.format("%s%03d", prefix, randomNumber);  // Ensures the ID is always 3 digits
+
+	        idExists = isIdExists(newId);
 	    }
 
-	    return "SF000"; // Fallback
+	    return newId;
 	}
 
-	
 	public static boolean Register(String email, String username, String password, String role) {
-		Database db = Database.getInstance();
-		String newId = generateNextId();
-		String query = "INSERT INTO users VALUES(?, ?, ?, ?, ?)";
-		PreparedStatement ps = db.preparedStatement(query);
-		
-		try {
-			ps.setString(1, newId);
-			ps.setString(2, email);
-			ps.setString(3, username);
-			ps.setString(4, password);
-			ps.setString(5, role);
-			ps.executeUpdate();
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
+	    Database db = Database.getInstance();
+	    String newId = generateId(role);
+	    String query = "INSERT INTO users(id, email, username, password, role) VALUES(?, ?, ?, ?, ?)";
+	    
+	    try (PreparedStatement ps = db.preparedStatement(query)) {
+	        ps.setString(1, newId);
+	        ps.setString(2, email);
+	        ps.setString(3, username);
+	        ps.setString(4, password);
+	        ps.setString(5, role);
+	        ps.executeUpdate();
+	        return true;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return false;
 	}
-	
+
 	public static User Login(String email, String password) {
 		Database db = Database.getInstance();
 		String query = "SELECT * FROM users WHERE email = ? and password = ?";
