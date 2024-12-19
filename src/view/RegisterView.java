@@ -28,7 +28,7 @@ public class RegisterView extends GridPane {
 		usernameTF = new TextField();
 		passwordTF = new TextField();
 		roleComboBox = new ComboBox<>();
-		roleComboBox.getItems().addAll("Admin", "Event Organizer", "Guest", "Vendor");
+		roleComboBox.getItems().addAll("Event Organizer", "Guest", "Vendor");
 		
 		register = new Button("Register");
 		login = new Button("Already have an account? Login");
