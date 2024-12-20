@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import database.Database;
 
@@ -12,9 +13,27 @@ public class Event {
 	private String description;
 	private String organizer_id;
 	
+	public static String generateEventId() {
+	    Database db = Database.getInstance();
+	    String query = "SELECT id FROM events ORDER BY id DESC LIMIT 1";
+	    String newId = "EV001"; // Default ID if the table is empty
+
+	    try (PreparedStatement ps = db.preparedStatement(query);
+	         ResultSet rs = ps.executeQuery()) {
+	        if (rs.next()) {
+	            String lastId = rs.getString("id");
+	            int numericPart = Integer.parseInt(lastId.substring(2)); // Extract numeric part after "EV"
+	            newId = String.format("EV%03d", numericPart + 1); // Increment and format to 3 digits
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return newId;
+	}
+	
 	public static boolean createEvent(String name, String date, String location, String desc, String organizerID) {
 	    Database db = Database.getInstance();
-	    String newId = "1";
+	    String newId = generateEventId();
 	    String query = "INSERT INTO events(id, name, date, location, description, organizer_id) VALUES(?, ?, ?, ?, ?, ?)";
 	    
 	    try (PreparedStatement ps = db.preparedStatement(query)) {
