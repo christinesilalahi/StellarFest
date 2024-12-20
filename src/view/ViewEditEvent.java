@@ -71,7 +71,7 @@ public class ViewEditEvent extends GridPane{
 		setButton();
 		Scene scene = new Scene(this, 500, 500);
 		stage.setScene(scene);
-		stage.setTitle("All Events");
+		stage.setTitle("Edit Event Form");
 		stage.show();
 	}
 

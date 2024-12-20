@@ -139,7 +139,7 @@ public class ViewEventDetails extends GridPane{
 		setButton();
 		Scene scene = new Scene(this, 500, 500);
 		stage.setScene(scene);
-		stage.setTitle("All Events");
+		stage.setTitle("Events Details");
 		stage.show();
 	}
 

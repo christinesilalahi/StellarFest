@@ -62,7 +62,6 @@ public class ViewAddVendor extends GridPane {
         tableView.getColumns().addAll(selectColumn, idColumn, nameColumn, emailColumn);
         tableView.setItems(candidateList);
 
-        tableView.setEditable(true);
     }
 
     public void setLayout() {
@@ -95,7 +94,7 @@ public class ViewAddVendor extends GridPane {
         setButton();
         Scene scene = new Scene(this, 500, 500);
         stage.setScene(scene);
-        stage.setTitle("All Events");
+        stage.setTitle("Send invitations");
         stage.show();
     }
 }
