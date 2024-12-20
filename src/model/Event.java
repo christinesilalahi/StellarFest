@@ -13,17 +13,17 @@ public class Event {
 	private String description;
 	private String organizer_id;
 	
-	public static String generateEventId() {
+	public static String generateId() {
 	    Database db = Database.getInstance();
 	    String query = "SELECT id FROM events ORDER BY id DESC LIMIT 1";
-	    String newId = "EV001"; // Default ID if the table is empty
+	    String newId = "EV001";
 
 	    try (PreparedStatement ps = db.preparedStatement(query);
 	         ResultSet rs = ps.executeQuery()) {
 	        if (rs.next()) {
 	            String lastId = rs.getString("id");
-	            int numericPart = Integer.parseInt(lastId.substring(2)); // Extract numeric part after "EV"
-	            newId = String.format("EV%03d", numericPart + 1); // Increment and format to 3 digits
+	            int numericPart = Integer.parseInt(lastId.substring(2)); 
+	            newId = String.format("EV%03d", numericPart + 1);
 	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();
@@ -33,7 +33,7 @@ public class Event {
 	
 	public static boolean createEvent(String name, String date, String location, String desc, String organizerID) {
 	    Database db = Database.getInstance();
-	    String newId = generateEventId();
+	    String newId = generateId();
 	    String query = "INSERT INTO events(id, name, date, location, description, organizer_id) VALUES(?, ?, ?, ?, ?, ?)";
 	    
 	    try (PreparedStatement ps = db.preparedStatement(query)) {
@@ -44,6 +44,9 @@ public class Event {
 	        ps.setString(5, desc);
 	        ps.setString(6, organizerID);
 	        ps.executeUpdate();
+	        
+	        EventOrganizer.createEvent(newId, organizerID);
+	        
 	        return true;
 	    } catch (Exception e) {
 	        e.printStackTrace();
