@@ -116,12 +116,13 @@ public class ViewEventDetails extends GridPane{
         });
 		
 		addVendor.setOnAction(e -> {
-			
+			new ViewAddVendor(stage, menuBar, event, "Vendor");
 			
 		});
 		
 		addGuest.setOnAction(e -> {
-			
+
+			new ViewAddVendor(stage, menuBar, event, "Guest");
 			
 		});
 	}
