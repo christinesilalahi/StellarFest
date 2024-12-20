@@ -2,7 +2,7 @@ package view;
 
 import java.util.List;
 
-import controller.EventController;
+import controller.EventOrganizerController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,9 +26,10 @@ public class ViewEvents extends GridPane{
 	TableView<Event> tableView;
 	Label messageLabel;
 	TableColumn<Event, String> idColumn, nameColumn, dateColumn, locationColumn, descriptionColumn;
+	TableColumn<Event, Void> detailsColumn;
 	
 	private void initialize() {
-        List<Event> events = Event.viewOrganizedEvents(user.getId()); 
+        List<Event> events = EventOrganizerController.viewOrganizedEvents(user.getId()); 
         messageLabel = new Label("");
         
         tableView = new TableView<>();
@@ -44,21 +45,38 @@ public class ViewEvents extends GridPane{
         descriptionColumn = new TableColumn<>("Description");
         descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent_description()));
         
-        TableColumn<Event, Void> editColumn = new TableColumn<>("Edit");
-        editColumn.setCellFactory(param -> new TableCell<Event, Void>() {
-            private final Button btn = new Button("Edit");
+        detailsColumn = new TableColumn<>("Details");
+        detailsColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button detailsButton = new Button("Details");
 
             {
-                btn.setOnAction(event -> {
-                    // Implement the edit functionality here (not required as per your request)
+                detailsButton.setOnAction(event -> {
+                    Event selectedEvent = getTableView().getItems().get(getIndex());
+                    if (selectedEvent != null) {
+                        redirectToEventDetails(selectedEvent);
+                    }
                 });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(detailsButton);
+                }
             }
         });
         
-        tableView.getColumns().addAll(idColumn, nameColumn, dateColumn, locationColumn, descriptionColumn, editColumn);
+        tableView.getColumns().addAll(idColumn, nameColumn, dateColumn, locationColumn, descriptionColumn, detailsColumn);
         tableView.getItems().setAll(events);
        
     }
+
+	 private void redirectToEventDetails(Event event) {
+	        new ViewEventDetails(stage, menuBar, user, event); 
+	    }
 
     public void setLayout() {
     	this.getChildren().clear();

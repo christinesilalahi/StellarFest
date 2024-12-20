@@ -2,6 +2,7 @@ package model;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,27 @@ public class Event {
 	    return null;
 	}
 	
+	public static String editEventName(String eventId, String eventName) {
+		Database db = Database.getInstance();
+		String query = "UPDATE events SET name = ? WHERE id = ?";
+		String messageString;
+		
+		try (PreparedStatement ps = db.preparedStatement(query)) {
+		        ps.setString(1, eventName);
+		        ps.setString(2, eventId);
+		        int rowsUpdated = ps.executeUpdate();
+		        
+		        if (rowsUpdated > 0) {
+		        	messageString = "Event name updated successfully.";
+		        } else {
+		        	messageString = "No event found with the given ID.";
+		        }
+		    } catch (SQLException e) {
+		    	messageString = "Error updating event name: " + e.getMessage();
+		    }
+		return messageString;
+	}
+	
 	private static String generateId() {
 	    Database db = Database.getInstance();
 	    String query = "SELECT id FROM events ORDER BY id DESC LIMIT 1";
@@ -57,7 +79,7 @@ public class Event {
 	    return newId;
 	}
 	
-	public static boolean createEvent(String name, String date, String location, String desc, String organizerID) {
+	public static void createEvent(String name, String date, String location, String desc, String organizerID) {
 	    Database db = Database.getInstance();
 	    String newId = generateId();
 	    String query = "INSERT INTO events(id, name, date, location, description, organizer_id) VALUES(?, ?, ?, ?, ?, ?)";
@@ -73,11 +95,9 @@ public class Event {
 	        
 	        EventOrganizer.createEvent(newId, organizerID);
 	        
-	        return true;
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
-	    return false;
 	}
 	
 	
