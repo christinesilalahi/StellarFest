@@ -16,8 +16,6 @@ public class Invitation {
 		this.invitation_role = invitation_role;
 	}
 	
-	
-	
 	public String getId() {
 		return id;
 	}

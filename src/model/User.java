@@ -123,6 +123,24 @@ public class User {
 		
 	}
 	
+	public static boolean changeProfile(User user) {
+	    Database db = Database.getInstance();
+	    String query = "UPDATE users SET email = ?, username = ?, password = ? WHERE id = ?";
+	    
+	    try (PreparedStatement ps = db.preparedStatement(query)) {
+	        ps.setString(1, user.getEmail());
+	        ps.setString(2, user.getUsername());
+	        ps.setString(3, user.getPassword());
+	        ps.setString(4, user.getId());
+	        ps.executeUpdate();
+	        return true;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+
+	
 	public User(String id, String email, String username, String password, String role) {
 		super();
 		this.id = id;

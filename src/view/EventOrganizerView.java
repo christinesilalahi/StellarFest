@@ -14,7 +14,7 @@ public class EventOrganizerView extends GridPane{
 	Stage stage;
 	MenuBar menuBar;
 	Menu menu;
-	MenuItem createEventItem, eventsItem, homeItem;
+	MenuItem createEventItem, eventsItem, homeItem, changeProfile;
     
 	public void initialize() {
         menuBar = new MenuBar();
@@ -25,6 +25,7 @@ public class EventOrganizerView extends GridPane{
         menu.getItems().add(createEventItem);
         menu.getItems().add(eventsItem);
         menu.getItems().add(homeItem);
+        menu.getItems().add(changeProfile);
         menuBar.getMenus().add(menu);
     }
 
@@ -47,6 +48,10 @@ public class EventOrganizerView extends GridPane{
     	
     	homeItem.setOnAction(e -> {
     		new EventOrganizerView(stage, user);
+    	});
+    	
+    	changeProfile.setOnAction(e -> {
+    		new ChangeProfileView(stage);
     	});
     }
 	
