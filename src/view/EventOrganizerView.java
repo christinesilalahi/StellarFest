@@ -59,7 +59,7 @@ public class EventOrganizerView extends GridPane{
 		setButton();
 		Scene scene = new Scene(this, 500, 500);
 		stage.setScene(scene);
-		stage.setTitle("Home");
+		stage.setTitle("Event Organizer Home");
 		stage.show();
 	}
 	

@@ -6,6 +6,7 @@ import controller.EventController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -23,63 +24,40 @@ public class ViewEvents extends GridPane{
 	Stage stage;
 	MenuBar menuBar;
 	TableView<Event> tableView;
+	Label messageLabel;
+	TableColumn<Event, String> idColumn, nameColumn, dateColumn, locationColumn, descriptionColumn;
 	
 	private void initialize() {
         List<Event> events = Event.viewOrganizedEvents(user.getId()); 
+        messageLabel = new Label("");
         
         tableView = new TableView<>();
         
-        TableColumn<Event, String> idColumn = new TableColumn<>("ID");
+        idColumn = new TableColumn<>("ID");
         idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent_id()));
-        TableColumn<Event, String> nameColumn = new TableColumn<>("Name");
+        nameColumn = new TableColumn<>("Name");
         nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent_name()));
-        TableColumn<Event, String> dateColumn = new TableColumn<>("Date");
+        dateColumn = new TableColumn<>("Date");
         dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent_date()));
-        TableColumn<Event, String> locationColumn = new TableColumn<>("Location");
+        locationColumn = new TableColumn<>("Location");
         locationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent_location()));
-        TableColumn<Event, String> descriptionColumn = new TableColumn<>("Description");
+        descriptionColumn = new TableColumn<>("Description");
         descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent_description()));
         
         TableColumn<Event, Void> editColumn = new TableColumn<>("Edit");
-        editColumn.setCellFactory(new Callback<TableColumn<Event, Void>, TableCell<Event, Void>>() {
-            @Override
-            public TableCell<Event, Void> call(TableColumn<Event, Void> param) {
-                return new TableCell<Event, Void>() {
-                    private final Button editButton = new Button("Edit");
+        editColumn.setCellFactory(param -> new TableCell<Event, Void>() {
+            private final Button btn = new Button("Edit");
 
-                    {
-                        editButton.setOnAction(event -> {
-                            Event currentEvent = getTableView().getItems().get(getIndex());
-                            editEventName(currentEvent);
-                        });
-                    }
-
-                    @Override
-                    public void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(editButton);
-                        }
-                    }
-                };
+            {
+                btn.setOnAction(event -> {
+                    // Implement the edit functionality here (not required as per your request)
+                });
             }
         });
         
         tableView.getColumns().addAll(idColumn, nameColumn, dateColumn, locationColumn, descriptionColumn, editColumn);
         tableView.getItems().setAll(events);
        
-    }
-
-    private void editEventName(Event event) {
-        TextInputDialog dialog = new TextInputDialog(event.getEvent_name());
-        dialog.setTitle("Edit Event Name");
-        dialog.setHeaderText("Edit the name of the event");
-        dialog.showAndWait().ifPresent(newName -> {
-            event.setEvent_name(newName);
-            // You can update the database here if needed
-        });
     }
 
     public void setLayout() {
@@ -90,6 +68,8 @@ public class ViewEvents extends GridPane{
         
         VBox container = new VBox(tableView);
         this.getChildren().add(container);
+        
+        this.add(messageLabel, 0, 2);
     }
 
 	public ViewEvents(Stage stage, MenuBar menuBar, User user) {
@@ -101,7 +81,7 @@ public class ViewEvents extends GridPane{
 		setLayout();
 		Scene scene = new Scene(this, 500, 500);
 		stage.setScene(scene);
-		stage.setTitle("Home");
+		stage.setTitle("All Events");
 		stage.show();
 	}
 

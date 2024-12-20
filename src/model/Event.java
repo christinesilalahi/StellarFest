@@ -15,6 +15,8 @@ public class Event {
 	private String event_description;
 	private String event_organizer_id;
 	
+//	public static String 
+	
 	public static List<Event> viewOrganizedEvents(String organizerID){
 		List<Event> events = new ArrayList<Event>();
 		Event event;
