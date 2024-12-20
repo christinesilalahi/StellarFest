@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.User;
 
-public class CreateEventView extends GridPane{
+public class ViewCreateEvent extends GridPane{
 	User user;
 	Stage stage;
 	MenuBar menuBar;
@@ -68,7 +68,7 @@ public class CreateEventView extends GridPane{
         });
 	}
 
-	public CreateEventView(Stage stage, MenuBar menuBar, User user) {
+	public ViewCreateEvent(Stage stage, MenuBar menuBar, User user) {
 		// TODO Auto-generated constructor stub
 		this.stage = stage;
 		this.menuBar = menuBar;

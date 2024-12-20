@@ -1,10 +1,6 @@
 package view;
 
-import java.nio.file.attribute.UserDefinedFileAttributeView;
-
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -18,16 +14,16 @@ public class EventOrganizerView extends GridPane{
 	Stage stage;
 	MenuBar menuBar;
 	Menu menu;
-	MenuItem createEventItem, eventItem, homeItem;
+	MenuItem createEventItem, eventsItem, homeItem;
     
 	public void initialize() {
         menuBar = new MenuBar();
         menu = new Menu("Options");
         createEventItem = new MenuItem("Create Event");
-        eventItem = new MenuItem("Event");
+        eventsItem = new MenuItem("Event");
         homeItem = new MenuItem("Home");
         menu.getItems().add(createEventItem);
-        menu.getItems().add(eventItem);
+        menu.getItems().add(eventsItem);
         menu.getItems().add(homeItem);
         menuBar.getMenus().add(menu);
     }
@@ -43,10 +39,10 @@ public class EventOrganizerView extends GridPane{
 
     public void setButton() {
     	createEventItem.setOnAction(e -> {
-    		new CreateEventView(stage, menuBar, user);
+    		new ViewCreateEvent(stage, menuBar, user);
     		});
-    	eventItem.setOnAction(e -> {
-//    		stuff
+    	eventsItem.setOnAction(e -> {
+    		new ViewEvents(stage, menuBar, user);
     		});
     	
     	homeItem.setOnAction(e -> {
