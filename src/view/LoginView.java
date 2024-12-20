@@ -58,7 +58,7 @@ public class LoginView extends GridPane {
 	            } else if("Vendor".equals(role)) {
 	                new VendorView(stage);
 	            } else if("Event Organizer".equals(role)) {
-	            	new EventOrganizerView();
+	            	new EventOrganizerView(stage, user);
 	            } else if("Guest".equals(role)) {
 	            	new GuestView();
 	            }
