@@ -18,6 +18,27 @@ public class Event {
 	
 //	public static String 
 	
+	public static List<Event> viewAllEvents(){
+		List<Event> events = new ArrayList<Event>();
+		Event event;
+		Database db = Database.getInstance();
+	    String query = "SELECT id, name, date, location, description, organizer_id FROM events";
+	    
+	    try (PreparedStatement ps = db.preparedStatement(query)){
+			ResultSet resultSet = ps.executeQuery();
+			 while (resultSet.next()){
+				 event = new Event(resultSet.getString("id"), resultSet.getString("name"), 
+						 resultSet.getString("date"), resultSet.getString("location"), 
+						 resultSet.getString("description"), resultSet.getString("organizer_id"));
+				 events.add(event);
+			 }
+			 return events;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	    return null;
+	}
+	
 	public static List<Event> viewOrganizedEvents(String organizerID){
 		List<Event> events = new ArrayList<Event>();
 		Event event;

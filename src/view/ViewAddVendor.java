@@ -61,6 +61,8 @@ public class ViewAddVendor extends GridPane {
 
         tableView.getColumns().addAll(selectColumn, idColumn, nameColumn, emailColumn);
         tableView.setItems(candidateList);
+        tableView.setEditable(true);
+
 
     }
 

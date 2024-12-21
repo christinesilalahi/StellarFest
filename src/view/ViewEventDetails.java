@@ -2,6 +2,7 @@ package view;
 
 import java.util.List;
 
+import controller.AdminController;
 import controller.EventController;
 import controller.EventOrganizerController;
 import javafx.beans.property.SimpleStringProperty;
@@ -54,8 +55,16 @@ public class ViewEventDetails extends GridPane{
         guestTableLabel = new Label("Guest Table");
         vendorTableLabel = new Label("Vendor Table");
         
-        List<Guest> guests = EventOrganizerController.getGuestByTransaction(event.getEvent_id());
-        List<Vendor> vendors = EventOrganizerController.getVendorByTransaction(event.getEvent_id());
+        
+        List<Guest> guests = null;
+        List<Vendor> vendors = null;
+        if(user.getRole().equals("Event Organizer")) {
+            guests = EventOrganizerController.getGuestByTransaction(event.getEvent_id());
+            vendors = EventOrganizerController.getVendorByTransaction(event.getEvent_id());
+        }else if(user.getRole().equals("Admin")) {
+            guests = AdminController.getGuestByTransaction(event.getEvent_id());
+            vendors = AdminController.getVendorByTransaction(event.getEvent_id());
+        }
         
         guestView = new TableView<>();
         idGColumn = new TableColumn<>("ID");
@@ -97,17 +106,21 @@ public class ViewEventDetails extends GridPane{
         this.add(descLabel, 0, 5);
         this.add(descEvent, 1, 5);
         
-        this.add(editEventName, 0, 7);
-        
-        this.add(partition, 0, 9);
-        this.add(addGuest, 0, 10);
-        this.add(addVendor, 1, 10);
-        
         this.add(guestTableLabel, 0, 11);
         this.add(vendorTableLabel, 1, 11);
         
         this.add(guestView, 0, 12);
         this.add(vendorView, 1, 12);
+        
+        if(user.getRole().equals("Event Organizer")) {
+
+            this.add(editEventName, 0, 7);
+            
+            this.add(partition, 0, 9);
+            this.add(addGuest, 0, 10);
+            this.add(addVendor, 1, 10);
+            
+        }
 	}
 	
 	public void setButton() {

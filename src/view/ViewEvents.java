@@ -2,6 +2,7 @@ package view;
 
 import java.util.List;
 
+import controller.AdminController;
 import controller.EventOrganizerController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Scene;
@@ -26,8 +27,15 @@ public class ViewEvents extends GridPane{
 	TableColumn<Event, String> idColumn, nameColumn, dateColumn, locationColumn, descriptionColumn;
 	TableColumn<Event, Void> detailsColumn;
 	
+	
 	private void initialize() {
-        List<Event> events = EventOrganizerController.viewOrganizedEvents(user.getId()); 
+		List<Event> events = null;
+		if(user.getRole().equals("Event Organizer")) {
+	        events = EventOrganizerController.viewOrganizedEvents(user.getId()); 
+		}
+		else if(user.getRole().equals("Admin")){
+			events = AdminController.viewAllEvents();
+		}
         messageLabel = new Label("");
         
         tableView = new TableView<>();
@@ -42,6 +50,9 @@ public class ViewEvents extends GridPane{
         locationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent_location()));
         descriptionColumn = new TableColumn<>("Description");
         descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent_description()));
+        descriptionColumn = new TableColumn<>("Organizer");
+        descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent_organizer_id()));
+        
         
         detailsColumn = new TableColumn<>("Details");
         detailsColumn.setCellFactory(param -> new TableCell<>() {
@@ -69,6 +80,7 @@ public class ViewEvents extends GridPane{
         
         tableView.getColumns().addAll(idColumn, nameColumn, dateColumn, locationColumn, descriptionColumn, detailsColumn);
         tableView.getItems().setAll(events);
+        
        
     }
 
@@ -82,10 +94,7 @@ public class ViewEvents extends GridPane{
         VBox topContainer = new VBox(menuBar);
         this.add(topContainer, 0, 0, 2, 1);
         
-        VBox container = new VBox(tableView);
-        this.getChildren().add(container);
-        
-        this.add(messageLabel, 0, 2);
+        this.add(tableView, 0, 1);
     }
 
 	public ViewEvents(Stage stage, MenuBar menuBar, User user) {

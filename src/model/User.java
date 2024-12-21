@@ -2,6 +2,8 @@ package model;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import database.Database;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -15,6 +17,28 @@ public class User {
 	private String role;
 	
 	private SimpleBooleanProperty selected;
+	
+	public static List<User> viewAllUsers(){
+		List<User> users = new ArrayList<User>();
+		User user;
+		Database db = Database.getInstance();
+	    String query = "SELECT id, email, username, password, role FROM users";
+	    
+	    try (PreparedStatement ps = db.preparedStatement(query)){
+			ResultSet resultSet = ps.executeQuery();
+			 while (resultSet.next()){
+				 user = new User(resultSet.getString("id"), resultSet.getString("email"), 
+						 resultSet.getString("username"), resultSet.getString("password"), 
+						 resultSet.getString("role"));
+				 users.add(user);
+			 }
+			 return users;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	    return null;
+	}
+	
 	
 	private static boolean isFieldExists(String field, String value) {
 	    Database db = Database.getInstance();
