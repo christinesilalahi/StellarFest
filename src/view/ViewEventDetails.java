@@ -97,17 +97,20 @@ public class ViewEventDetails extends GridPane{
         this.add(descLabel, 0, 5);
         this.add(descEvent, 1, 5);
         
-        this.add(editEventName, 0, 7);
-        
-        this.add(partition, 0, 9);
-        this.add(addGuest, 0, 10);
-        this.add(addVendor, 1, 10);
-        
-        this.add(guestTableLabel, 0, 11);
-        this.add(vendorTableLabel, 1, 11);
-        
-        this.add(guestView, 0, 12);
-        this.add(vendorView, 1, 12);
+        if(user.getRole().equals("Event Organizer")) {
+
+            this.add(editEventName, 0, 7);
+            
+            this.add(partition, 0, 9);
+            this.add(addGuest, 0, 10);
+            this.add(addVendor, 1, 10);
+            
+            this.add(guestTableLabel, 0, 11);
+            this.add(vendorTableLabel, 1, 11);
+            
+            this.add(guestView, 0, 12);
+            this.add(vendorView, 1, 12);
+        }
 	}
 	
 	public void setButton() {
