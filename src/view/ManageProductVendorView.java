@@ -8,11 +8,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import model.User;
 
 public class ManageProductVendorView extends GridPane {
 
     Stage stage;
-    String vendor_id;
+    User user;
 
     Label nameLabel, descLabel;
     TextField nameTF;
@@ -48,22 +49,22 @@ public class ManageProductVendorView extends GridPane {
         });
 
         submit.setOnAction(e -> {
-//            String productName = nameTF.getText();
-//            String productDescription = descTA.getText();
-//
-//            boolean result = VendorController.ManageProduct(vendor_id, productName, productDescription);
-//
-//            if (!result) {
-//                System.out.println("Something is wrong! Please ensure the description is at least 200 characters.");
-//            } else {
-//                System.out.println("Product added successfully!");
-//            }
+            String productName = nameTF.getText();
+            String productDescription = descTA.getText();
+
+            boolean result = VendorController.manageProduct(user, productName, productDescription);
+
+            if (!result) {
+                System.out.println("Something is wrong! Please ensure the description is at least 200 characters.");
+            } else {
+                System.out.println("Product added successfully!");
+            }
         });
     }
 
-    public ManageProductVendorView(Stage stage, String vendor_id) {
+    public ManageProductVendorView(Stage stage, User user) {
         this.stage = stage;
-        this.vendor_id = vendor_id;
+        this.user = user;
         initialize();
         setLayout();
         setButtonActions();

@@ -3,4 +3,5 @@ module StellarFest {
 	requires javafx.controls;
 	requires java.sql;
 	exports main;
+	requires javafx.base;
 }

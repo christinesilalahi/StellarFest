@@ -10,12 +10,15 @@ import javafx.stage.Stage;
 import model.Event;
 import model.Invitation;
 import model.User;
+import model.Vendor;
 
 import java.util.List;
 
 public class VendorView extends GridPane {
 
     private Stage stage;
+    private User user;
+    private Vendor vendor;
     private Label greetings;
     private Button changeProfile, invitation, manageProducts;
 
@@ -39,12 +42,11 @@ public class VendorView extends GridPane {
         });
         
         invitation.setOnAction(e -> {
-        	new InvitationVendorView(stage);
+        	new InvitationVendorView(stage, vendor);
         });
         
         manageProducts.setOnAction(e -> {
-        	String vendor_id = null;
-        	new ManageProductVendorView(stage, vendor_id);
+        	new ManageProductVendorView(stage, user);
         });
     }
     

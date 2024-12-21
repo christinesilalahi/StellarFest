@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import database.Database;
+import javafx.beans.property.SimpleBooleanProperty;
 
 public class User {
 
@@ -12,6 +13,8 @@ public class User {
 	private String username;
 	private String password;
 	private String role;
+	
+	private SimpleBooleanProperty selected;
 	
 	private static boolean isFieldExists(String field, String value) {
 	    Database db = Database.getInstance();
@@ -148,6 +151,8 @@ public class User {
 		this.username = username;
 		this.password = password;
 		this.role = role;
+
+        this.selected = new SimpleBooleanProperty(false);
 	}
 	public String getId() {
 		return id;
@@ -180,6 +185,15 @@ public class User {
 		this.role = role;
 	}
 	
-	
+	public boolean isSelected() {
+	    return selected.get();
+	}
 
+	public SimpleBooleanProperty selectedProperty() {
+	    return selected;
+	}
+
+	public void setSelected(boolean selected) {
+	    this.selected.set(selected);
+	}
 }
