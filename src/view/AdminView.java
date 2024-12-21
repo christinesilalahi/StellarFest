@@ -39,7 +39,7 @@ public class AdminView extends GridPane{
 
     public void setButton() {
     	userItem.setOnAction(e -> {
-//    		new ViewCreateEvent(stage, menuBar, user);
+    		new ViewUsers(stage, menuBar);
     		});
     	eventsItem.setOnAction(e -> {
     		new ViewEvents(stage, menuBar, user);

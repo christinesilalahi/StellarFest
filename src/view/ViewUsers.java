@@ -19,51 +19,36 @@ import model.User;
 import model.Event;
 
 public class ViewUsers extends GridPane{
-	User user;
 	Stage stage;
 	MenuBar menuBar;
-	TableView<Event> tableView;
+	TableView<User> tableView;
 	Label messageLabel;
-	TableColumn<Event, String> idColumn, nameColumn, dateColumn, locationColumn, descriptionColumn;
-	TableColumn<Event, Void> detailsColumn;
+	TableColumn<User, String> idColumn, nameColumn, emailColumn;
+	TableColumn<User, Void> detailsColumn;
 	
 	
 	private void initialize() {
-		List<Event> events = null;
-		if(user.getRole().equals("Event Organizer")) {
-	        events = EventOrganizerController.viewOrganizedEvents(user.getId()); 
-		}
-		else if(user.getRole().equals("Admin")){
-			events = AdminController.viewAllEvents();
-		}
+		List<User> users = AdminController.viewAllUser();
+		
         messageLabel = new Label("");
         
         tableView = new TableView<>();
         
         idColumn = new TableColumn<>("ID");
-        idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent_id()));
-        nameColumn = new TableColumn<>("Name");
-        nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent_name()));
-        dateColumn = new TableColumn<>("Date");
-        dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent_date()));
-        locationColumn = new TableColumn<>("Location");
-        locationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent_location()));
-        descriptionColumn = new TableColumn<>("Description");
-        descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent_description()));
-        descriptionColumn = new TableColumn<>("Organizer");
-        descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent_organizer_id()));
+        idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getId()));
+        nameColumn = new TableColumn<>("username");
+        nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUsername()));
+        emailColumn = new TableColumn<>("Date");
+        emailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
         
         
         detailsColumn = new TableColumn<>("Details");
         detailsColumn.setCellFactory(param -> new TableCell<>() {
-            private final Button detailsButton = new Button("Details");
+            private final Button detailsButton = new Button("Delete");
 
             {
                 detailsButton.setOnAction(event -> {
-                    Event selectedEvent = getTableView().getItems().get(getIndex());
-                    if (selectedEvent != null) {
-                        redirectToEventDetails(selectedEvent);
-                    }
+                    
                 });
             }
 
@@ -78,15 +63,11 @@ public class ViewUsers extends GridPane{
             }
         });
         
-        tableView.getColumns().addAll(idColumn, nameColumn, dateColumn, locationColumn, descriptionColumn, detailsColumn);
-        tableView.getItems().setAll(events);
+        tableView.getColumns().addAll(idColumn, nameColumn, emailColumn, detailsColumn);
+        tableView.getItems().setAll(users);
         
        
     }
-
-	 private void redirectToEventDetails(Event event) {
-	        new ViewEventDetails(stage, menuBar, user, event); 
-	    }
 
     public void setLayout() {
     	this.getChildren().clear();
@@ -97,16 +78,15 @@ public class ViewUsers extends GridPane{
         this.add(tableView, 0, 1);
     }
 
-	public ViewUsers(Stage stage, MenuBar menuBar, User user) {
+	public ViewUsers(Stage stage, MenuBar menuBar) {
 		// TODO Auto-generated constructor stub
 		this.stage = stage;
-		this.user = user;
 		this.menuBar = menuBar;
 		initialize();
 		setLayout();
 		Scene scene = new Scene(this, 500, 500);
 		stage.setScene(scene);
-		stage.setTitle("All Events");
+		stage.setTitle("All Users");
 		stage.show();
 	}
 
