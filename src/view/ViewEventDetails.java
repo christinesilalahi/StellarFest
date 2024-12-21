@@ -2,6 +2,7 @@ package view;
 
 import java.util.List;
 
+import controller.AdminController;
 import controller.EventController;
 import controller.EventOrganizerController;
 import javafx.beans.property.SimpleStringProperty;
@@ -54,8 +55,16 @@ public class ViewEventDetails extends GridPane{
         guestTableLabel = new Label("Guest Table");
         vendorTableLabel = new Label("Vendor Table");
         
-        List<Guest> guests = EventOrganizerController.getGuestByTransaction(event.getEvent_id());
-        List<Vendor> vendors = EventOrganizerController.getVendorByTransaction(event.getEvent_id());
+        
+        List<Guest> guests = null;
+        List<Vendor> vendors = null;
+        if(user.getRole().equals("Event Organizer")) {
+            guests = EventOrganizerController.getGuestByTransaction(event.getEvent_id());
+            vendors = EventOrganizerController.getVendorByTransaction(event.getEvent_id());
+        }else if(user.getRole().equals("Admin")) {
+            guests = AdminController.getGuestByTransaction(event.getEvent_id());
+            vendors = AdminController.getVendorByTransaction(event.getEvent_id());
+        }
         
         guestView = new TableView<>();
         idGColumn = new TableColumn<>("ID");
