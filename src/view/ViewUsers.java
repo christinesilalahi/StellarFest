@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 import model.User;
 import model.Event;
 
-public class ViewEvents extends GridPane{
+public class ViewUsers extends GridPane{
 	User user;
 	Stage stage;
 	MenuBar menuBar;
@@ -97,7 +97,7 @@ public class ViewEvents extends GridPane{
         this.add(tableView, 0, 1);
     }
 
-	public ViewEvents(Stage stage, MenuBar menuBar, User user) {
+	public ViewUsers(Stage stage, MenuBar menuBar, User user) {
 		// TODO Auto-generated constructor stub
 		this.stage = stage;
 		this.user = user;

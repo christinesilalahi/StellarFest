@@ -54,7 +54,7 @@ public class LoginView extends GridPane {
 			} else {
 	            String role = user.getRole();
 	            if ("Admin".equals(role)) {
-	                new AdminView(stage);
+	                new AdminView(stage, user);
 	            } else if("Vendor".equals(role)) {
 	                new VendorView(stage);
 	            } else if("Event Organizer".equals(role)) {
