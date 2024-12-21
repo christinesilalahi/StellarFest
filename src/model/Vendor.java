@@ -23,53 +23,35 @@ public class Vendor extends User {
         this.acceptedInvitations = acceptedInvitations;
     }
     
-    public List<InvitationDetails> fetchPendingInvitations() {
-        List<InvitationDetails> invitationDetailsList = new ArrayList<>();
+    public boolean acceptInvitation(String eventID) {
         Database db = Database.getInstance();
-        String query = "SELECT i.id AS invitation_id, i.event_id, i.user_id, i.invitation_status, " +
-                       "e.name AS event_name, e.date AS event_date, e.location AS event_location, " +
-                       "e.description AS event_description, u.username AS organizer_username " +
-                       "FROM invitations i " +
-                       "JOIN events e ON i.event_id = e.id " +
-                       "JOIN users u ON e.organizer_id = u.id " +
-                       "WHERE i.user_id = ? AND i.invitation_status = 'Pending'";
-
+        String query = "UPDATE invitations SET invitation_status = 'Accepted' WHERE event_id = ? AND user_id = ?";
+        
         try (PreparedStatement ps = db.preparedStatement(query)) {
-            ps.setString(1, this.getId());
-            ResultSet resultSet = ps.executeQuery();
-            while (resultSet.next()) {
-                Invitation invitation = new Invitation(
-                        resultSet.getString("invitation_id"),
-                        resultSet.getString("event_id"),
-                        resultSet.getString("user_id"),
-                        resultSet.getString("invitation_status"),
-                        null
-                );
-
-                Event event = new Event(
-                        resultSet.getString("event_id"),
-                        resultSet.getString("event_name"),
-                        resultSet.getString("event_date"),
-                        resultSet.getString("event_location"),
-                        resultSet.getString("event_description"),
-                        resultSet.getString("user_id")
-                );
-
-                InvitationDetails details = new InvitationDetails(
-                        invitation,
-                        event.getEvent_name(),
-                        event.getEvent_date(),
-                        event.getEvent_location(),
-                        event.getEvent_description(),
-                        resultSet.getString("organizer_username")
-                );
-
-                invitationDetailsList.add(details);
-            }
+            ps.setString(1, eventID);
+            ps.setString(2, this.getId());
+            int rowsUpdated = ps.executeUpdate();
+            
+            return rowsUpdated > 0;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return invitationDetailsList;
+        return false;
     }
-
+    
+    public boolean manageVendor(String name, String description) {
+        Database db = Database.getInstance();
+        String query = "INSERT INTO products(vendor_id, product_name, product_description) VALUES(?, ?, ?)";
+        
+        try (PreparedStatement ps = db.preparedStatement(query)) {
+            ps.setString(1, this.getId()); 
+            ps.setString(2, name);
+            ps.setString(3, description);
+            ps.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
  }

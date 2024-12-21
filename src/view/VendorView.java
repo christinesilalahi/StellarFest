@@ -39,7 +39,7 @@ public class VendorView extends GridPane {
         });
         
         invitation.setOnAction(e -> {
-        	new InvitationVendorView(stage, null);
+        	new InvitationVendorView(stage);
         });
         
         manageProducts.setOnAction(e -> {

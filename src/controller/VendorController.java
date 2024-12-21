@@ -1,7 +1,6 @@
 package controller;
 
 import model.Vendor;
-import model.InvitationDetails;
 import model.Product;
 import model.User;
 
@@ -15,8 +14,4 @@ public class VendorController {
 		}
 		return Product.ManageProduct(vendor_id, product_name, product_description);
 	}
-
-    public static List<InvitationDetails> fetchPendingInvitations(Vendor vendor) {
-        return vendor.fetchPendingInvitations();
-    }
 }

@@ -35,12 +35,11 @@ public class Product {
 
     public static boolean ManageProduct(String vendor_id, String product_name, String product_description) {
         Database db = Database.getInstance();
-        String query = "INSERT INTO products(vendor_id, product_name, product_description) VALUES(?, ?)";
+        String query = "INSERT INTO products(product_name, product_description) VALUES(?, ?)";
 
         try (PreparedStatement ps = db.preparedStatement(query)) {
-        	ps.setString(1, vendor_id);
-            ps.setString(2, product_name);
-            ps.setString(3, product_description);
+            ps.setString(1, product_name);
+            ps.setString(2, product_description);
             ps.executeUpdate();
             return true;
         } catch (Exception e) {

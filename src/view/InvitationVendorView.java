@@ -18,9 +18,8 @@ public class InvitationVendorView extends GridPane {
     private ListView<String> invitationListView;
     private Button backButton;
 
-    public InvitationVendorView(Stage stage, Vendor vendor) {
+    public InvitationVendorView(Stage stage) {
         this.stage = stage;
-        this.vendor = vendor;
         initialize();
         setLayout();
         setButtonActions();

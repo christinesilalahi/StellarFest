@@ -35,11 +35,11 @@ public class ManageProductVendorView extends GridPane {
         this.setVgap(10);
 
         this.add(nameLabel, 0, 0);
-        this.add(nameTF, 1, 0);
-        this.add(descLabel, 0, 1);
-        this.add(descTA, 1, 1);
-        this.add(submit, 0, 2);
-        this.add(back, 1, 2);
+        this.add(nameTF, 0, 1);
+        this.add(descLabel, 0, 2);
+        this.add(descTA, 0, 3);
+        this.add(submit, 0, 4);
+        this.add(back, 0, 5);
     }
 
     public void setButtonActions() {
@@ -48,16 +48,16 @@ public class ManageProductVendorView extends GridPane {
         });
 
         submit.setOnAction(e -> {
-            String productName = nameTF.getText();
-            String productDescription = descTA.getText();
-
-            boolean result = VendorController.ManageProduct(vendor_id, productName, productDescription);
-
-            if (!result) {
-                System.out.println("Something is wrong! Please ensure the description is at least 200 characters.");
-            } else {
-                System.out.println("Product added successfully!");
-            }
+//            String productName = nameTF.getText();
+//            String productDescription = descTA.getText();
+//
+//            boolean result = VendorController.ManageProduct(vendor_id, productName, productDescription);
+//
+//            if (!result) {
+//                System.out.println("Something is wrong! Please ensure the description is at least 200 characters.");
+//            } else {
+//                System.out.println("Product added successfully!");
+//            }
         });
     }
 
